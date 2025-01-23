@@ -6,7 +6,8 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('homepage') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                        <i class="fas fa-heartbeat fa-2x text-blue-500 mr-2"></i>
+                        <span class="text-lg font-bold text-gray-800">CDS Apps</span>
                     </a>
                 </div>
 
@@ -16,6 +17,11 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
+
+                <!-- Decision Support -->
+                <x-nav-link :href="route('decision-support.index')" :active="request()->routeIs('decision-support.*')">
+                        {{ __('Decision Support') }}
+                    </x-nav-link>
             </div>
 
             <!-- Settings Dropdown -->
@@ -71,6 +77,11 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
         </div>
+
+        <!-- Decision Support -->
+        <x-responsive-nav-link :href="route('decision-support.index')" :active="request()->routeIs('decision-support.*')">
+                {{ __('Decision Support') }}
+            </x-responsive-nav-link>
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
