@@ -1,26 +1,28 @@
 @extends('layouts.app')
 
-@section('title', 'Add Decision Support Entry')
-
 @section('content')
-<h1 class="h4 mb-3">Add Decision Support Entry</h1>
+    <div class="container mx-auto mt-6">
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-2xl font-bold mb-4">Add Decision Support Entry</h2>
 
-<form action="{{ route('decision-support.store') }}" method="POST">
-    @csrf
+            <form action="{{ route('decision-support.store') }}" method="POST">
+                @csrf
+                <div class="mb-4">
+                    <label for="patient_id" class="block text-gray-700 font-medium mb-2">Patient</label>
+                    <select name="patient_id" id="patient_id" class="w-full border-gray-300 rounded-md">
+                        <option value="">Select a Patient</option>
+                        @foreach ($patients as $patient)
+                            <option value="{{ $patient->id }}">{{ $patient->user->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('patient_id')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-    <div class="mb-3">
-        <label for="patient_id" class="form-label">Patient</label>
-        <select name="patient_id" id="patient_id" class="form-select" required>
-            <option value="">Select a Patient</option>
-            @foreach ($patients as $patient)
-                <option value="{{ $patient->id }}">{{ $patient->user->name }}</option>
-            @endforeach
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label for="analysis_data" class="form-label">Analysis Data (JSON)</label>
-        <textarea name="analysis_data" id="analysis_data" class="form-control" rows="4" required>
+                <div class="mb-4">
+                    <label for="analysis_data" class="block text-gray-700 font-medium mb-2">Analysis Data (JSON)</label>
+                    <textarea name="analysis_data" id="analysis_data" rows="10" class="w-full border-gray-300 rounded-md">
 {
     "condition": "hypertension",
     "severity": "mild",
@@ -37,14 +39,28 @@
         }
     ]
 }
-        </textarea>
-    </div>
+                </textarea>
+                    @error('analysis_data')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-    <div class="mb-3">
-        <label for="recommendation" class="form-label">Recommendation</label>
-        <textarea name="recommendation" id="recommendation" class="form-control" rows="4" required></textarea>
-    </div>
+                <div class="mb-4">
+                    <label for="recommendation" class="block text-gray-700 font-medium mb-2">Recommendation</label>
+                    <textarea name="recommendation" id="recommendation" rows="3"
+                              class="w-full border-gray-300 rounded-md"></textarea>
+                    @error('recommendation')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-    <button type="submit" class="btn btn-primary">Save</button>
-</form>
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">
+                        Submit
+                    </button>
+                    <a href="{{ route('decision-support.index') }}" class="ml-2 bg-gray-300 text-gray-800 px-4 py-2 rounded shadow hover:bg-gray-400">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection

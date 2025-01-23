@@ -1,35 +1,28 @@
 @extends('layouts.app')
 
-@section('title', 'Welcome to the CDS App')
+@section('title', 'Welcome to the Clinical Decision Support')
 
 @section('content')
-<div class="container text-center">
-    <h1 class="my-4">Welcome to the Clinical Decision Support System</h1>
-    <p class="lead">
+<div class="container mx-auto mt-10 text-center">
+    <h1 class="text-3xl font-bold mb-4">Welcome to the Clinical Decision Support System</h1>
+    <p class="text-lg text-gray-700 mb-8">
         Empowering healthcare professionals with intelligent decision-making tools.
     </p>
 
-    <div class="row mt-5">
-        <!-- Link to Decision Support Feature -->
-        <div class="col-md-6">
-            <div class="card border-primary">
-                <div class="card-body">
-                    <h5 class="card-title">Decision Support</h5>
-                    <p class="card-text">Manage and review clinical decision support data and recommendations.</p>
-                    <a href="{{ route('decision-support.index') }}" class="btn btn-primary">View Decision Support</a>
-                </div>
-            </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="p-6 bg-white rounded-lg shadow-md">
+            <h2 class="text-xl font-semibold mb-2">Decision Support</h2>
+            <p class="text-gray-600">Manage and review clinical decision support data and recommendations.</p>
+            <a href="{{ route('decision-support.index') }}" class="inline-block mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                View Decision Support
+            </a>
         </div>
-
-        <!-- Placeholder for Future Features -->
-        <div class="col-md-6">
-            <div class="card border-primary">
-                <div class="card-body">
-                    <h5 class="card-title">Coming Soon</h5>
-                    <p class="card-text">Stay tuned for upcoming features to enhance clinical decision-making.</p>
-                    <a href="#" class="btn btn-secondary disabled">Explore</a>
-                </div>
-            </div>
+        <div class="p-6 bg-white rounded-lg shadow-md">
+            <h2 class="text-xl font-semibold mb-2">Coming Soon</h2>
+            <p class="text-gray-600">Stay tuned for upcoming features to enhance clinical decision-making.</p>
+            <a href="#" class="inline-block mt-4 px-4 py-2 bg-gray-400 text-white rounded cursor-not-allowed">
+                Explore
+            </a>
         </div>
     </div>
 </div>

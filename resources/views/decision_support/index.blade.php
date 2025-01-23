@@ -1,85 +1,68 @@
 @extends('layouts.app')
 
-@section('title', 'Decision Support Entries')
-
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 class="h4">Decision Support Entries</h1>
-    <a href="{{ route('decision-support.create') }}" class="btn btn-primary">Add New Entry</a>
-</div>
+    <div class="container mx-auto mt-6">
+        <div class="flex justify-between items-center mb-4">
+            <h1 class="text-2xl font-semibold">Decision Support Entries</h1>
+            <a href="{{ route('decision-support.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 transition">
+                Add New Entry
+            </a>
+        </div>
 
-@if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <table class="min-w-full table-auto">
+                <thead class="bg-gray-100 border-b">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">ID</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Patient</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Analysis Data</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Recommendation</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @foreach ($data as $entry)
+                        <tr>
+                            <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $entry->id }}</td>
+                            <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $entry->patient->user->name ?? 'N/A' }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-500">
+                                @if ($entry->decoded_analysis_data)
+                                    <div>
+                                        <strong>Condition:</strong> {{ $entry->decoded_analysis_data['condition'] ?? 'N/A' }}<br>
+                                        <strong>Severity:</strong> {{ $entry->decoded_analysis_data['severity'] ?? 'N/A' }}<br>
+                                        <strong>Observations:</strong>
+                                        <ul class="list-disc ml-6">
+                                            @foreach ($entry->decoded_analysis_data['observations'] as $observation)
+                                                <li>
+                                                    <strong>Type:</strong> {{ $observation['type'] ?? 'N/A' }},
+                                                    <strong>Value:</strong> {{ $observation['value'] ?? 'N/A' }},
+                                                    <strong>Timestamp:</strong> {{ $observation['timestamp'] ?? 'N/A' }}
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                        <strong>Recommendation:</strong> {{ $entry->recommendation ?? 'N/A' }}
+                                    </div>
+                                @else
+                                    <em>No Analysis Data</em>
+                                @endif
+                            </td>
+                            <td class="px-6 py-4 text-sm font-medium text-gray-500">{{ $entry->recommendation }}</td>
+                            <td class="px-6 py-4 text-sm space-x-2">
+                                <a href="{{ route('decision-support.edit', $entry->id) }}" class="text-indigo-600 hover:text-indigo-900">
+                                    Edit
+                                </a>
+                                <form action="{{ route('decision-support.destroy', $entry->id) }}" method="POST" class="inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Are you sure?')">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
-@endif
-
-<div class="table-responsive">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Patient</th>
-                <th>Analysis Data</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($decisionSupports as $support)
-            <tr>
-                <td>{{ $support->id }}</td>
-                <td>{{ $support->patient->user->name }}</td>
-                <td>
-                    <div class="analysis-data">
-                        <span class="short-data">
-                            {{ \Illuminate\Support\Str::limit(json_encode($support->analysis_data, JSON_PRETTY_PRINT), 50) }}
-                        </span>
-                        <span class="full-data d-none">
-                            <pre>{{ json_encode($support->analysis_data, JSON_PRETTY_PRINT) }}</pre>
-                        </span>
-                        <a href="#" class="read-more btn btn-link p-0">Read More</a>
-                    </div>
-                </td>
-                <td>
-                    <a href="{{ route('decision-support.edit', $support->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                    <form action="{{ route('decision-support.destroy', $support->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            @empty
-            <tr>
-                <td colspan="4" class="text-center">No decision support entries found.</td>
-            </tr>
-            @endforelse
-        </tbody>
-    </table>
-</div>
 @endsection
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const readMoreLinks = document.querySelectorAll('.read-more');
-
-        readMoreLinks.forEach(link => {
-            link.addEventListener('click', function (event) {
-                event.preventDefault();
-                const parent = this.closest('.analysis-data');
-                const shortData = parent.querySelector('.short-data');
-                const fullData = parent.querySelector('.full-data');
-
-                if (fullData.classList.contains('d-none')) {
-                    shortData.classList.add('d-none');
-                    fullData.classList.remove('d-none');
-                    this.textContent = 'Read Less';
-                } else {
-                    shortData.classList.remove('d-none');
-                    fullData.classList.add('d-none');
-                    this.textContent = 'Read More';
-                }
-            });
-        });
-    });
-</script>

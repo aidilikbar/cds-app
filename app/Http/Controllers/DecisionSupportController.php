@@ -10,8 +10,14 @@ class DecisionSupportController extends Controller
 {
     public function index()
     {
-        $decisionSupports = DecisionSupport::with('patient')->get();
-        return view('decision_support.index', compact('decisionSupports'));
+        $data = DecisionSupport::with('patient')->get();
+        // Decode analysis_data JSON for each entry
+        $data->map(function ($item) {
+            $item->decoded_analysis_data = json_decode($item->analysis_data, true);
+            return $item;
+        });
+        \Log::info('Processed Data:', $data->toArray()); // Log the processed data for verification
+        return view('decision_support.index', ['data' => $data]);
     }
 
     public function create()
@@ -34,9 +40,10 @@ class DecisionSupportController extends Controller
 
     public function edit($id)
     {
-        $decisionSupport = DecisionSupport::findOrFail($id);
-        $patients = Patient::all(); // Retrieve all patients
-        return view('decision_support.edit', compact('decisionSupport', 'patients'));
+        $data = DecisionSupport::findOrFail($id); // Fetch the specific record
+        $patients = Patient::all(); // Fetch all patients for the dropdown, if applicable
+
+        return view('decision_support.edit', compact('data', 'patients')); // Pass both variables
     }
 
     public function update(Request $request, $id)
