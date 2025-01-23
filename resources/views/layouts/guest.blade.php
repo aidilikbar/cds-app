@@ -23,7 +23,7 @@
                         <a href="{{ route('root') }}" class="flex items-center">
                             <i class="fas fa-heartbeat fa-3x text-blue-500"></i>
                         </a>
-                        <p class="mt-4 text-xl font-bold text-gray-800">Patient Portals</p>
+                        <p class="mt-4 text-xl font-bold text-gray-800">Clinical Decision Support</p>
                     </div>
                 </a>
             </div>
