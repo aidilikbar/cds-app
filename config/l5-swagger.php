@@ -15,6 +15,7 @@ return [
                 'api' => 'api/documentation',
             ],
             'paths' => [
+                'docs' => storage_path('api-docs'),
                 /*
                  * Edit to include full URL in ui for assets
                  */
@@ -46,6 +47,7 @@ return [
                 'annotations' => [
                     base_path('app'),
                 ],
+                'base' => env('L5_SWAGGER_BASE_PATH', null),
             ],
         ],
     ],
@@ -315,7 +317,7 @@ return [
          * Constants which can be used in annotations
          */
         'constants' => [
-            'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'http://my-default-host.com'),
+            'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'https://cds-app-89thh.ondigitalocean.app'),
         ],
     ],
 ];
