@@ -1,0 +1,202 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "CDS App API Documentation",
+        "description": "This is the API documentation for the CDS application.",
+        "contact": {
+            "email": "support@cds-app.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8003",
+            "description": "CDS App API Server"
+        }
+    ],
+    "paths": {
+        "/api/decision-support": {
+            "get": {
+                "tags": [
+                    "Decision Support"
+                ],
+                "summary": "Get all decision support entries",
+                "description": "Display a listing of the resource.",
+                "operationId": "01d9bff0d151d6d1300d3a12a3122685",
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/DecisionSupport"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Decision Support"
+                ],
+                "summary": "Create a new decision support entry",
+                "description": "Store a newly created resource.",
+                "operationId": "81f7e09d27d1e8da3e54ad98f33f0d9c",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DecisionSupport"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Resource created successfully"
+                    }
+                }
+            }
+        },
+        "/api/decision-support/{id}": {
+            "get": {
+                "tags": [
+                    "Decision Support"
+                ],
+                "summary": "Get a single decision support entry",
+                "description": "Show the specified resource.",
+                "operationId": "29e0d0f3aa4a2c6084eb99c1ea5c9acb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the decision support entry",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DecisionSupport"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Decision Support"
+                ],
+                "summary": "Update an existing decision support entry",
+                "description": "Update the specified resource.",
+                "operationId": "5c58c9b207a2055c307bf52524a074a7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the decision support entry",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DecisionSupport"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful response"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Decision Support"
+                ],
+                "summary": "Delete a decision support entry",
+                "description": "Remove the specified resource.",
+                "operationId": "5ef20ca405f88ef9e62dfe0113064413",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the decision support entry",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Resource deleted successfully"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "DecisionSupport": {
+                "required": [
+                    "patient_id",
+                    "analysis_data",
+                    "recommendation"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "ID of the decision support entry",
+                        "type": "integer"
+                    },
+                    "patient_id": {
+                        "description": "ID of the patient",
+                        "type": "integer"
+                    },
+                    "analysis_data": {
+                        "description": "Analysis data in JSON format",
+                        "type": "string"
+                    },
+                    "recommendation": {
+                        "description": "Recommendation based on the analysis",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Creation timestamp",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Update timestamp",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Decision Support",
+            "description": "Decision Support"
+        }
+    ]
+}
