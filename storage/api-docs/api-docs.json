@@ -10,7 +10,7 @@
     },
     "servers": [
         {
-            "url": "http://localhost:8003",
+            "url": "https://cds-app-89thh.ondigitalocean.app",
             "description": "CDS App API Server"
         }
     ],
